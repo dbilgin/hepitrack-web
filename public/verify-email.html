@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<!--[if lte IE 8]> <html class="oldie" lang="en"> <![endif]-->
+<!--[if IE 9]> <html class="ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html lang="en">
+<!--<![endif]-->
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="format-detection" content="telephone=no">
+  <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+  <title>Hepitrack</title>
+  <link rel="stylesheet" href="css/all.css" />
+  <link rel="stylesheet" href="css/screen.css" />
+  <!--[if lt IE 9]>
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+</head>
+
+<body>
+  <div id="wrapper">
+    <div class="wrapper-holder">
+      <div class="header-holder">
+        <header id="header">
+          <a href="index.html">
+            <img style="height: 65px; width: 65px;" src="./images/logo.png" />
+          </a>
+        </header>
+      </div>
+      <section class="main">
+				<div class="content">
+          <div class="entry">
+            <p id="result"></p>
+          </div>
+				</div>
+      </section>
+    </div>
+    <footer id="footer">
+      <div class="footer-content">
+        <p class="copy">Copyright 2020 Hepitrack. All rights reserved.</p>
+      </div>
+    </footer>
+  </div>
+  <script src="js/jquery-3.5.1.min.js"></script>
+  <script type="text/javascript" src="js/main.js"></script>
+
+  <script>
+    $(function () {
+      var code;
+
+      var split = window.location.toString().split('code=');
+      if (split.length > 1) {
+        code = split[1];
+      }
+
+      if (!!code) {
+        $.ajax({
+          type: "POST",
+          url: 'https://api.hepitrack.com/auth/verify_email',
+          data: JSON.stringify({verification_token: code}),
+          contentType: 'application/json; charset=utf-8',
+          success: function (data, textStatus, xhr) {
+            if(xhr.status === 204) {
+              $('#result').text('Your account is now verified!');
+            } else {
+              $('#result').text('An error has occurred verifying your account.');
+            }
+          },
+          error: function() {
+            $('#result').text('An error has occurred verifying your account.');
+          }
+        });
+      }
+    });
+  </script>
+</body>
+
+</html>
